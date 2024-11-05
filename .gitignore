@@ -1,0 +1,11 @@
+*.log
+/logs
+
+main
+main.exe
+/main
+
+/__debug_bin
+__debug_bin
+__debug_bin.exe
+/__debug_bin.exe

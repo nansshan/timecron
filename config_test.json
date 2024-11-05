@@ -1,0 +1,52 @@
+{
+  "name": "timecron",
+  "version": "1.1.0",
+  "task": [
+    {
+      "name": "mysql数据库备份任务",
+      "type": "1",
+      "exec": "ls",
+      "isrun": "2",
+      "time": "@every 5s"
+    },
+    {
+      "name": "mysql数据mc同步minio任务哈哈这个是每天13点执行的一个任务嘿嘿嘿",
+      "type": "2",
+      "isrun": "2",
+      "exec": "./shell.sh",
+      "time": "@every 5s"
+    },
+    {
+      "name": "发起http请求1",
+      "type": "4",
+      "isrun": "2",
+      "url": "",
+      "time": "@every 5s"
+    },
+    {
+      "name": "发起http请求2222",
+      "type": "4",
+      "isrun": "2",
+      "exec": "",
+      "time": "46 16 * * *"
+    },
+    {
+      "name": "发起http请求16:46",
+      "type": "4",
+      "isrun": "2",
+      "exec": "",
+      "time": "46 16 * * *"
+    },
+    {
+      "name": "发起http请求16:46",
+      "type": "4",
+      "exec": "",
+      "time": "@daily 4:00:00"
+    }
+  ],
+  "5秒钟触发一次": "@every 5s",
+  "每天四点执行(不行)": "@daily 4:00:00",
+  "每天16:28(不行)": "@daily 16:28:00",
+  "每天16:46": "46 16 * * *",
+  "types": "1,command,2shell,3http,4,5,6"
+}

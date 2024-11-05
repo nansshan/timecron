@@ -1,0 +1,89 @@
+{
+	"name": "timecron",
+	"username": "admin",
+	"email": "xnkyn@qq.com",
+	"password": "21232f297a57a5a743894a0e4a801fc3",
+	"task": [
+		{
+			"createtime": "2023-08-23 22:42:00",
+			"name": "测试任务",
+			"type": "1",
+			"exec": "pwd",
+			"isrun": "2",
+			"time": "@every 20s",
+			"desc": "30秒执行一次ls命令任务"
+		},
+		{
+			"createtime": "2023-08-25 14:34:42",
+			"desc": "数据库备份",
+			"exec": "pwd",
+			"isrun": "2",
+			"name": "数据库备份",
+			"time": "46 16 * * *",
+			"type": "1"
+		},
+		{
+			"createtime": "2023-08-25 14:35:50",
+			"desc": "代码备份",
+			"exec": "pwd",
+			"isrun": "2",
+			"name": "网站源代码备份",
+			"time": "46 16 * * *",
+			"type": "1"
+		},
+		{
+			"createtime": "2023-08-25 14:36:42",
+			"desc": "检测网站响应",
+			"exec": "http://baidu.com",
+			"isrun": "2",
+			"name": "请求百度网站测活",
+			"time": "46 16 * * *",
+			"type": "4"
+		},
+		{
+			"createtime": "2023-08-25 14:38:03",
+			"desc": "",
+			"exec": "script/shell.sh",
+			"isrun": "2",
+			"name": "执行shell脚本文件",
+			"time": "46 16 * * *",
+			"type": "2"
+		},
+		{
+			"createtime": "2023-08-25 14:38:45",
+			"desc": "",
+			"exec": "script/test.js",
+			"isrun": "2",
+			"name": "执行nodejs脚本文件",
+			"time": "46 16 * * *",
+			"type": "6"
+		},
+		{
+			"createtime": "2023-08-25 14:39:15",
+			"desc": "",
+			"exec": "script/test.py",
+			"isrun": "2",
+			"name": "执行python脚本文件",
+			"time": "46 16 * * *",
+			"type": "5"
+		},
+		{
+			"createtime": "2023-08-25 14:56:57",
+			"desc": "",
+			"exec": "ls",
+			"isrun": "1",
+			"name": "shell脚本内容",
+			"time": "46 16 * * *",
+			"type": "3"
+		},
+		{
+			"createtime": "2023-09-07 15:06:05",
+			"desc": "fff",
+			"exec": "ls",
+			"isrun": "2",
+			"name": "test",
+			"time": "@every 10s",
+			"type": "1"
+		}
+	]
+}

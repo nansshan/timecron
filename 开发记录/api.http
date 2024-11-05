@@ -1,0 +1,102 @@
+@baseUrl = http://localhost:3005
+
+### 根接口
+GET {{baseUrl}} HTTP/1.1
+content-type: application/json
+
+### logs文件夹日志列表接口
+GET {{baseUrl}}/api/cron/log HTTP/1.1
+content-type: application/json
+
+
+### 运行中的任务列表
+GET {{baseUrl}}/api/cron/run HTTP/1.1
+content-type: application/json
+
+### 删除任务源
+GET {{baseUrl}}/api/cron/delete?name=mysql数据库备份任务 HTTP/1.1
+content-type: application/json
+
+
+
+### 运行一个任务
+GET {{baseUrl}}/api/cron/run?name=测试 HTTP/1.1
+content-type: application/json
+
+
+### 获取日志
+GET {{baseUrl}}/api/cron/getlog?name=run-task-test.log HTTP/1.1
+content-type: application/json
+
+### 修改任务
+POST  {{baseUrl}}/api/cron/update HTTP/1.1
+content-type: application/json
+
+{
+    "isrun": "1",
+    "name": "测试",
+    "time": "@every 10s"
+}
+
+### 添加任务
+POST  {{baseUrl}}/api/cron/add HTTP/1.1
+content-type: application/json
+
+{
+    "name": "测试添加任务1",
+    "type": "1",
+    "time": "46 16 * * *",
+    "isrun": "2",
+    "desc": "46 16 * * *",
+    "exec": "lll"
+}
+### 测试运行任务
+POST  {{baseUrl}}/api/cron/test HTTP/1.1
+content-type: application/json
+
+{
+    "type": "1",
+    "exec": "ls"
+}
+
+### 用户登录
+POST  {{baseUrl}}/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "e10adc3949ba59abbe56e057f20f883e"
+}
+
+
+### 获取用户详情
+GET {{baseUrl}}/api/user/info HTTP/1.1
+content-type: application/json
+
+### 用户登录
+POST  {{baseUrl}}/api/user/update HTTP/1.1
+Cookie: cookie=ieIa9LUEblfNzTnH7UrtcA%3D%3D
+content-type: application/json
+
+{
+    "userName": "admin1",
+    "userEmail": "8888@qq.com"
+}
+
+### 修改用户密码
+POST  {{baseUrl}}/api/user/updatepass HTTP/1.1
+Cookie: cookie=ieIa9LUEblfNzTnH7UrtcA%3D%3D
+content-type: application/json
+
+{
+    "password_current": "8888@qq.com",
+    "password": "e10adc3949ba59abbe56e057f20f883e"
+}
+
+
+### 日志下载
+GET {{baseUrl}}/api/cron/downlog?name=main.log HTTP/1.1
+Cookie: cookie=ieIa9LUEblfNzTnH7UrtcA%3D%3D
+### 日志下载 遍历目录
+GET {{baseUrl}}/api/cron/downlog?name=./config.json HTTP/1.1
+Cookie: cookie=ieIa9LUEblfNzTnH7UrtcA%3D%3D

@@ -1,0 +1,6 @@
+"#!/bin/bash\nshould_run=true\n\tcounter=0\n\twhile [ $counter -lt 5 ] && [ $should_run = true ]; do\n\t   echo \"当前时间:$(date)\"\n\t   counter=$((counter+1))\n\t   sleep 1\n\tdone\n\techo \"脚本执行结束\""
+
+
+"#!/bin/bash\nshould_run=true\ncounter=0\n\nwhile [ $counter -lt 5 ] && [ $should_run = true ]; do\n\u00a0 \u00a0echo \"当前时间:$(date)\"\n\u00a0 \u00a0counter=$((counter+1))\n\u00a0 \u00a0sleep 1\ndone\n\necho \"脚本执行结束\"\n"
+
+"#!/bin/bash\nshould_run=true\ncounter=0\n\nwhile [ $counter -lt 5 ] && [ $should_run = true ]; do\n   echo \"当前时间:$(date)\"\n   counter=$((counter+1))\n   sleep 1\ndone\n\necho \"脚本执行结束\"\n"
