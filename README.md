@@ -14,7 +14,7 @@ TimeCron是一个用于创建和管理定时任务的轻量级系统。它支持
 您可以根据自己需要自行构建目标平台可执行文件,或者自行构建docker容器镜像
 
 ```bash
-git clone https://github.com/xnkyn/timecron
+git clone https://github.com/xnkyn/timecron.git
 
 go build
 ```
