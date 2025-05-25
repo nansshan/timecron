@@ -11,6 +11,9 @@ RUN go mod download
 # 复制项目源代码
 COPY . .
 
+# 整理依赖，确保 go.mod 和 go.sum 是最新的
+RUN go mod tidy
+
 # 编译项目
 # CGO_ENABLED=0 禁用 CGO，以便在 Alpine 这种不含 C 库的环境中运行
 # GOOS=linux 指定编译为 Linux 可执行文件
