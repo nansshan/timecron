@@ -1,6 +1,7 @@
 package mylog
 
 import (
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -9,9 +10,9 @@ import (
 
 const logDir = "logs"
 
-func LogInit(name string) (*log.Logger, *os.File) {
+func LogInit(name string) (*log.Logger, io.Writer) {
 	if name == "" { //没有名称时候,返回空日志
-		return log.New(os.Stdout, "", 0), nil
+		return log.New(os.Stdout, "", 0), os.Stdout
 	}
 	logPath := filepath.Join(logDir, name)
 
@@ -25,23 +26,21 @@ func LogInit(name string) (*log.Logger, *os.File) {
 		f, err := os.Create(logPath)
 		if err != nil {
 			log.Println(err.Error())
-			return nil, nil
-		} else {
-			// _, err = f.Write([]byte("要写入的文本内容"))
-			log.Println(name, "日志文件创建成功")
+			return log.New(os.Stdout, "LOG_FILE_CREATE_ERROR: ", log.LstdFlags), os.Stdout
 		}
-		defer f.Close()
+		log.Println(name, "日志文件创建成功")
+		f.Close()
 	}
 
 	file, err := os.OpenFile(logPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("打开日志文件失败: %v", err)
 	}
 
-	// writer := io.MultiWriter(file)
+	multiWriter := io.MultiWriter(file, os.Stdout)
 
-	logger := log.New(file, "", log.LstdFlags)
+	logger := log.New(multiWriter, "", log.LstdFlags)
 
-	return logger, file
+	return logger, multiWriter
 
 }

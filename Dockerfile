@@ -22,8 +22,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o timecron main.go
 # 使用更小的基础镜像构建最终镜像
 FROM alpine:latest
 
-# 设置时区为上海
-ENV TZ=Asia/Shanghai
+# 安装 tzdata 以支持时区设置
+RUN apk update && apk add --no-cache tzdata
 
 # 设置工作目录
 WORKDIR /app
