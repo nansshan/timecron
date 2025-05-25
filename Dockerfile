@@ -31,15 +31,23 @@ WORKDIR /app
 # 从构建环境中复制编译后的二进制文件
 COPY --from=builder /app/timecron .
 
+# 确保二进制文件有执行权限
+RUN chmod +x ./timecron
+
 # 复制配置文件
 COPY config.json .
 
 # 复制静态文件
 COPY static ./static
 
+# 设置环境变量
+ENV GIN_MODE=release
 
 # 暴露端口 (根据 api.http, 项目运行在 3005 端口)
 EXPOSE 3005
 
-# 运行命令
-CMD ["./timecron"] 
+# 设置健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD wget --no-verbose --tries=1 --spider http://localhost:3005/ping || exit 1
+
+# 使用ENTRYPOINT确保容器启动时执行应用
+ENTRYPOINT ["./timecron"] 
