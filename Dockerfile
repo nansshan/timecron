@@ -33,7 +33,6 @@ COPY config.json .
 
 # 复制静态文件
 COPY static ./static
-COPY timecron/views ./timecron/views
 
 
 # 暴露端口 (根据 api.http, 项目运行在 3005 端口)
