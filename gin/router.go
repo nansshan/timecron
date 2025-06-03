@@ -20,6 +20,21 @@ type ApiData struct {
 	Port      string
 }
 
+// Middleware to log all requests
+func RequestLogger() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		log.Printf("Incoming Request: Method: %s, Path: %s, IP: %s, User-Agent: %s",
+			c.Request.Method,
+			c.Request.URL.Path,
+			c.ClientIP(),
+			c.Request.UserAgent())
+		c.Next() // Process the request
+
+		// Log after request has been processed
+		log.Printf("Finished Request: Path: %s, Status: %d", c.Request.URL.Path, c.Writer.Status())
+	}
+}
+
 func InitApi(cfg gjson.Result, addApi map[string]string) {
 	ApiData := &ApiData{
 		Cookie: "", //刷新token
@@ -36,6 +51,7 @@ func (p *ApiData) Init() {
 
 	gin.SetMode(gin.ReleaseMode) // 关闭gin启动时路由打印
 	RootRoute := gin.Default()
+	RootRoute.Use(RequestLogger()) // <--- 添加日志中间件
 	p.RootRoute = RootRoute
 	// RootRoute.Use(installHandler()) //使用中间件进行全局用户认证
 	// RootRoute.Use(Cors())
