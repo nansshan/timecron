@@ -19,8 +19,8 @@ RUN ls -la /app && echo "Builder: /app directory listed to check for timecron_ex
 # Stage 2: Create the runtime image
 FROM alpine:latest
 
-# Install timezone data and bash
-RUN apk --no-cache add tzdata bash
+# Install timezone data, bash, and curl
+RUN apk --no-cache add tzdata bash curl
 
 WORKDIR /app
 
