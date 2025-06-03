@@ -34,12 +34,18 @@ var TaskData = map[cron.EntryID]TaskInfo{}
 
 // 定时任务
 func CronInit(cfg gjson.Result) {
+	fmt.Println("DEBUG: CronInit() started")
 	tasks := cfg.Get("task")
 	C = cron.New(
 		// cron.WithLogger(cron.VerbosePrintfLogger(log.New(os.Stdout, "cron: ", log.LstdFlags))),
 		cron.WithParser(cron.NewParser(cron.SecondOptional | cron.Minute | cron.Hour | cron.Dom | cron.Month | cron.Dow | cron.Descriptor)))
 
 	tasks.ForEach(func(key, value gjson.Result) bool { //添加用户自定义任务
+		fmt.Printf("DEBUG: CronInit - Processing task from config: Name: %s, Type: %s, Exec: %s, IsRun: %s\n",
+			value.Get("name").String(),
+			value.Get("type").String(),
+			value.Get("exec").String(),
+			value.Get("isrun").String())
 
 		isrun := value.Get("isrun").String()
 		if isrun != "2" { //启动时候是否执行
@@ -62,6 +68,8 @@ func CronInit(cfg gjson.Result) {
 		return true
 	})
 
+	fmt.Println("DEBUG: CronInit - Finished processing user tasks from config")
+
 	// 遍历系统任务切片中的每一项
 	for _, item := range SystemTask {
 		// fmt.Println(item.Name, item.Type)
@@ -73,10 +81,11 @@ func CronInit(cfg gjson.Result) {
 
 	// //每天凌晨每天的0点、 4:00执行  //可以add多个定时任务
 	// c.AddFunc("0 0 4 * * ?", func() {
-	// 	my.taskCommand(`docker exec mysql /bin/bash -c 'mysqldump -uroot -pmypass vpndata > /var/lib/mysql/databackup/vpndata.sql && echo $?'`)
+	// 	my.taskCommand(`docker exec mysql /bin/bash -c \'mysqldump -uroot -pmypass vpndata > /var/lib/mysql/databackup/vpndata.sql && echo $?\'`)
 	// })
 
 	C.Start()
+	fmt.Println("DEBUG: CronInit() - Cron started")
 	// 获取任务列表
 	// GetCronList()
 	defer C.Stop()
@@ -90,6 +99,9 @@ func CronInit(cfg gjson.Result) {
 * exec 执行内容
  */
 func AddRunFunc(TaskInfo TaskInfo) {
+	fmt.Printf("DEBUG: AddRunFunc called for Task: Name: '%s', Type: '%s', Exec: '%s', Time: '%s', System: %v\n",
+		TaskInfo.Name, TaskInfo.Type, TaskInfo.Exec, TaskInfo.Time, TaskInfo.System)
+
 	logname := fmt.Sprintf("%s.log", TaskInfo.Name)
 	if TaskInfo.System {
 		logname = ""

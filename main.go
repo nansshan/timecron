@@ -46,8 +46,11 @@ func main() {
 	fmt.Println(time.Now())
 	log.Println("系统main启动")
 
-	//初始化web服务 传递端口
+	fmt.Println("DEBUG: main.go - Calling serve.InitApi()")
 	go serve.InitApi(cfg, nil)
-	//初始化定时任务
-	timecron.CronInit(cfg)
+	fmt.Println("DEBUG: main.go - serve.InitApi() called (async)")
+
+	fmt.Println("DEBUG: main.go - Calling timecron.CronInit()")
+	timecron.CronInit(cfg) // This function blocks with select{}
+	fmt.Println("DEBUG: main.go - timecron.CronInit() returned (should not happen if select{} is used)")
 }
