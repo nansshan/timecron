@@ -10,13 +10,11 @@ RUN go mod download
 # Copy the entire project source code
 COPY . .
 
-# Build the Go application
-# CGO_ENABLED=0 ensures a statically linked binary
-# -ldflags="-s -w" strips debugging information and symbols to reduce binary size
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o timecron main.go
+# Build the Go application and output to a specific path /app/timecron_executable
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/timecron_executable main.go
 
-# Verify that the executable (expected as 'main' based on logs) exists in the builder stage
-RUN ls -l /app/main && echo "Builder: /app/main (the actual executable) verified."
+# List all contents of /app in the builder stage to see what was generated
+RUN ls -la /app && echo "Builder: /app directory listed to check for timecron_executable."
 
 # Stage 2: Create the runtime image
 FROM alpine:latest
@@ -26,9 +24,9 @@ RUN apk --no-cache add tzdata bash
 
 WORKDIR /app
 
-# Copy the compiled binary (named 'main' in builder) from the builder stage
+# Copy the compiled binary (assuming it's /app/timecron_executable in builder)
 # and name it 'timecron' in the runtime stage.
-COPY --from=builder /app/main ./timecron
+COPY --from=builder /app/timecron_executable ./timecron
 
 # Verify the copied file (now named timecron) and ensure it's executable
 RUN ls -l /app/timecron && chmod +x /app/timecron
