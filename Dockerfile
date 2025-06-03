@@ -15,8 +15,8 @@ COPY . .
 # -ldflags="-s -w" strips debugging information and symbols to reduce binary size
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o timecron main.go
 
-# Verify that the timecron executable exists in the builder stage at /app/timecron
-RUN ls -l /app/timecron && echo "Builder: /app/timecron verified."
+# Verify that the executable (expected as 'main' based on logs) exists in the builder stage
+RUN ls -l /app/main && echo "Builder: /app/main (the actual executable) verified."
 
 # Stage 2: Create the runtime image
 FROM alpine:latest
@@ -26,10 +26,11 @@ RUN apk --no-cache add tzdata bash
 
 WORKDIR /app
 
-# Copy the compiled binary from the builder stage
-COPY --from=builder /app/timecron .
+# Copy the compiled binary (named 'main' in builder) from the builder stage
+# and name it 'timecron' in the runtime stage.
+COPY --from=builder /app/main ./timecron
 
-# Verify the copied file and ensure it's executable
+# Verify the copied file (now named timecron) and ensure it's executable
 RUN ls -l /app/timecron && chmod +x /app/timecron
 
 # Copy the configuration file
