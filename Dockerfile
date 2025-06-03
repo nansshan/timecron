@@ -31,11 +31,11 @@ COPY --from=builder /app/timecron_executable ./timecron
 # Verify the copied file (now named timecron) and ensure it's executable
 RUN ls -l /app/timecron && chmod +x /app/timecron
 
-# Create a minimal, known-good config.json to rule out issues with the copied one
-RUN echo '{ "name": "timecron-minimal", "username": "admin", "email": "xnkyn@qq.com", "password": "21232f297a57a5a743894a0e4a801fc3", "task": [] }' > /app/config.json
-
 # Original COPY config.json is now replaced by the RUN echo command above for testing
-# COPY config.json ./config.json 
+# RUN echo '{ "name": "timecron-minimal", "username": "admin", "email": "xnkyn@qq.com", "password": "21232f297a57a5a743894a0e4a801fc3", "task": [] }' > /app/config.json
+
+# Copy the configuration file from the build context (repository)
+COPY config.json ./config.json
 
 # Copy the scripts directory if your tasks in config.json depend on external scripts
 # Adjust if your scripts are located elsewhere or not needed.
