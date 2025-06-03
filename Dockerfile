@@ -18,13 +18,16 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o timecron main.go
 # Stage 2: Create the runtime image
 FROM alpine:latest
 
-# Install timezone data
-RUN apk --no-cache add tzdata
+# Install timezone data and bash
+RUN apk --no-cache add tzdata bash
 
 WORKDIR /app
 
 # Copy the compiled binary from the builder stage
 COPY --from=builder /app/timecron .
+
+# Verify the copied file and ensure it's executable
+RUN ls -l /app/timecron && chmod +x /app/timecron
 
 # Copy the configuration file
 # The application will create a default config.json if it's not found,
@@ -42,4 +45,4 @@ RUN mkdir -p /app/logs
 EXPOSE 3005
 
 # Command to run the application
-CMD sh -c "./timecron ; echo \"Timecron application exited with status $?. Sleeping indefinitely.\" ; sleep infinity" 
+CMD sh -c "echo 'Listing /app contents:'; ls -la /app; echo 'Attempting to execute /app/timecron:'; /app/timecron ; echo \"Timecron application exited with status $?. Sleeping indefinitely.\" ; sleep infinity" 
