@@ -18,6 +18,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o timecron main.go
 # Stage 2: Create the runtime image
 FROM alpine:latest
 
+# Install timezone data
+RUN apk --no-cache add tzdata
+
 WORKDIR /app
 
 # Copy the compiled binary from the builder stage
@@ -39,4 +42,4 @@ RUN mkdir -p /app/logs
 EXPOSE 3005
 
 # Command to run the application
-CMD ["./timecron"] 
+CMD sh -c "./timecron ; echo \"Timecron application exited with status $?. Sleeping indefinitely.\" ; sleep infinity" 
