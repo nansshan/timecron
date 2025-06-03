@@ -84,10 +84,17 @@ func (p *ApiData) Init() {
 
 	// 关键点【解决页面刷新404的问题】
 	RootRoute.NoRoute(func(c *gin.Context) {
+		indexHTML, err := fs.ReadFile(filesys, "index.html")
+		if err != nil {
+			log.Printf("NoRoute: Failed to read index.html from embedded FS: %v", err) // Log the error
+			// 返回一个明确的 404 错误，如果 index.html 无法加载
+			c.String(http.StatusNotFound, "Error: index.html not found or unreadable.")
+			return
+		}
+
 		//设置响应状态
 		c.Writer.WriteHeader(http.StatusOK)
 		//载入首页
-		indexHTML, _ := fs.ReadFile(filesys, "index.html")
 		c.Writer.Write(indexHTML)
 		//响应HTML类型
 		c.Writer.Header().Add("Accept", "text/html")
