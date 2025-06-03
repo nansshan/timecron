@@ -15,6 +15,9 @@ COPY . .
 # -ldflags="-s -w" strips debugging information and symbols to reduce binary size
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o timecron main.go
 
+# Verify that the timecron executable exists in the builder stage at /app/timecron
+RUN ls -l /app/timecron && echo "Builder: /app/timecron verified."
+
 # Stage 2: Create the runtime image
 FROM alpine:latest
 
